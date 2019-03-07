@@ -207,7 +207,7 @@ void stencil_task(const Task *task,
 		// perform clamps when necessary before reading values.
 		for (PointInRectIterator<2> pir(rect); pir(); pir++)
 		{
-			if(pir[0] == 0 || pir[1] == 0 || pir[0] == args.Nx - 1|| pir[1] == args.Ny - 1) {
+			if(pir[0] == 0 || pir[1] == 0 || pir[0] == args.Tx - 1|| pir[1] == args.Ty - 1) {
 				write_acc[*pir] = read_acc[*pir];
 			} else {
 				double r = read_acc[make_point(pir[0] + 1, pir[1])];
