@@ -106,8 +106,8 @@ void top_level_task(const Task *task,
 
 	Transform<2,2> transform;
 	transform[0][0] = args.Nx;
-	transform[0][1] = args.Nx;
-	transform[1][0] = args.Ny;
+	transform[0][1] = 0;
+	transform[1][0] = 0;
 	transform[1][1] = args.Ny;
 	long long int extent_hi_v[2] = {args.Nx, args.Ny};
 	long long int extent_lo_v[2] = {-1, -1};
