@@ -101,8 +101,7 @@ void top_level_task(const Task *task,
 	Point<2> color_hi(B);
 	Rect<2> color_bounds(color_lo, color_hi);
 	IndexSpaceT<2> color_is = runtime->create_index_space(ctx, color_bounds);
-	IndexPartition disjoint_ip = runtime->create_equal_partition(ctx, is, color_is);
-	//IndexPartition disjoint_ip = runtime->create_partition_by_blockify(ctx, is, make_point(args.Nx, args.Ny));
+	IndexPartition disjoint_ip = runtime->create_partition_by_blockify(ctx, is, make_point(args.Nx, args.Ny));
 
 
 	Transform<2,2> transform;
