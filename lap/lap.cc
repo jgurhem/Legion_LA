@@ -143,6 +143,12 @@ void top_level_task(const Task *task,
 	stencil_launcher.add_field(1, FID_2);
 	runtime->execute_index_space(ctx, stencil_launcher);
 
+
+	TaskLauncher save_launcher2(SAVE_TASK_ID, TaskArgument(NULL, 0));
+	save_launcher2.add_region_requirement(RegionRequirement(stencil_lr, READ_ONLY, EXCLUSIVE, stencil_lr));
+	save_launcher2.add_field(0, FID_2);
+	runtime->execute_task(ctx, save_launcher2);
+
 	runtime->destroy_logical_region(ctx, stencil_lr);
 	runtime->destroy_field_space(ctx, fs);
 	runtime->destroy_index_space(ctx, is);
