@@ -1,10 +1,21 @@
 import "regent"
 local c = regentlib.c
+local cstring = terralib.includec("string.h")
+local std = terralib.includec("stdlib.h")
 require("bla_common")
 
 task main()
   var nt : int32 = 4
   var np : int32 = 4
+  var args = c.legion_runtime_get_input_args()
+  for i = 0, args.argc do
+    if cstring.strcmp(args.argv[i], "-N") == 0 then
+      np = std.atoi(args.argv[i + 1])
+    elseif cstring.strcmp(args.argv[i], "-T") == 0 then
+      nt = std.atoi(args.argv[i + 1])
+    end
+  end
+
   var init : int32 = 0
 
   var gridA = ispace(int2d, { x = nt * np, y = nt * np })
