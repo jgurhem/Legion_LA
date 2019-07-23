@@ -7,12 +7,15 @@ require("bla_common")
 task main()
   var nt : int32 = 4
   var np : int32 = 4
+  var save : bool = false
   var args = c.legion_runtime_get_input_args()
   for i = 0, args.argc do
     if cstring.strcmp(args.argv[i], "-N") == 0 then
       np = std.atoi(args.argv[i + 1])
     elseif cstring.strcmp(args.argv[i], "-T") == 0 then
       nt = std.atoi(args.argv[i + 1])
+    elseif cstring.strcmp(args.argv[i], "-S") == 0 then
+      save = true
     end
   end
 
@@ -29,7 +32,9 @@ task main()
   var A_inv_p = make_partition_mat(A_inv, tilesA_inv, np)
 
   init_mat(A)
-  print_mat("a.bin", A, nt * np)
+  if save then
+    print_mat("a.bin", A, nt * np)
+  end
   for k = 0, nt-1 do
     inversion(A_p[int2d({k, k})], A_inv_p[int2d({k, 0})], np)
     for i = k + 1, nt do
@@ -39,7 +44,9 @@ task main()
       end
     end
   end
-  print_mat("lu.bin", A, nt * np)
+  if save then
+    print_mat("lu.bin", A, nt * np)
+  end
 
 end
 
