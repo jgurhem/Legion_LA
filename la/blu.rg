@@ -2,12 +2,17 @@ import "regent"
 local c = regentlib.c
 local cstring = terralib.includec("string.h")
 local std = terralib.includec("stdlib.h")
+local stdio = terralib.includec("stdio.h")
+local systime = terralib.includec("sys/time.h")
 require("bla_common")
 
 task main()
   var nt : int32 = 4
   var np : int32 = 4
   var save : bool = false
+  var te : systime.timeval
+  var ts : systime.timeval
+  var tz : systime.timezone
   var args = c.legion_runtime_get_input_args()
   for i = 0, args.argc do
     if cstring.strcmp(args.argv[i], "-N") == 0 then
@@ -35,6 +40,7 @@ task main()
   if save then
     print_mat("a.bin", A, nt * np)
   end
+  systime.gettimeofday(&ts, &tz)
   for k = 0, nt-1 do
     inversion(A_p[int2d({k, k})], A_inv_p[int2d({k, 0})], np)
     for i = k + 1, nt do
@@ -44,6 +50,8 @@ task main()
       end
     end
   end
+  systime.gettimeofday(&te, &tz)
+  stdio.printf("%f\n", (te.tv_sec - ts.tv_sec) + (te.tv_usec - ts.tv_usec) / 1000000.0);
   if save then
     print_mat("lu.bin", A, nt * np)
   end
