@@ -10,6 +10,7 @@ task main()
   var nt : int32 = 4
   var np : int32 = 4
   var save : bool = false
+  var printm : bool = false
   var te : systime.timeval
   var ts : systime.timeval
   var tz : systime.timezone
@@ -21,6 +22,8 @@ task main()
       nt = std.atoi(args.argv[i + 1])
     elseif cstring.strcmp(args.argv[i], "-S") == 0 then
       save = true
+    elseif cstring.strcmp(args.argv[i], "-P") == 0 then
+      printm = true
     end
   end
 
@@ -38,7 +41,10 @@ task main()
 
   init_mat(A)
   if save then
-    print_mat("a.bin", A, nt * np)
+    save_mat("a.bin", A, nt * np)
+  end
+  if printm then
+    print_mat("a", A, nt * np)
   end
   systime.gettimeofday(&ts, &tz)
   for k = 0, nt-1 do
@@ -53,7 +59,10 @@ task main()
   systime.gettimeofday(&te, &tz)
   stdio.printf("%f\n", (te.tv_sec - ts.tv_sec) + (te.tv_usec - ts.tv_usec) / 1000000.0);
   if save then
-    print_mat("lu.bin", A, nt * np)
+    save_mat("lu.bin", A, nt * np)
+  end
+  if printm then
+    print_mat("lu", A, nt * np)
   end
 
 end

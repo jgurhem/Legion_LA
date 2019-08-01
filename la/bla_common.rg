@@ -1,5 +1,6 @@
 import "regent"
 local c = regentlib.c
+local stdio = terralib.includec("stdio.h")
 
 task make_partition_mat(points : region(ispace(int2d), double),
                         tiles : ispace(int2d), np : int32)
@@ -36,7 +37,14 @@ where reads writes(A) do
   end
 end
 
-task print_mat(outfilename : regentlib.string, A : region(ispace(int2d), double), n : int)
+task print_mat(idstr : regentlib.string, A : region(ispace(int2d), double), n : int)
+where reads(A) do
+  for i in A.ispace do
+    stdio.printf("%s %d %d %lf\n", idstr, i.x, i.y, A[i]);
+  end
+end
+
+task save_mat(outfilename : regentlib.string, A : region(ispace(int2d), double), n : int)
 where reads(A) do
   var file = c.fopen([rawstring](outfilename), "w")
   regentlib.assert(not isnull(file), "save : failed to open file")
