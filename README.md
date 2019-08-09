@@ -23,7 +23,7 @@ regent.py blu.rg -T <nb_blocks> -N <blocksize>
 Make sure you set up the `LG_RT_DIR` variable. It locates Legion `runtime` directory.
 
 ```
-cd lap1d
+cd lap1D
 make
 ./lap
 ```
